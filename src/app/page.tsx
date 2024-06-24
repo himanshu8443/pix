@@ -74,7 +74,8 @@ export default function Home() {
         <div className="">
           <Gallery
             enableImageSelection={false}
-            rowHeight={550}
+            // window.innerWidth
+            rowHeight={window.innerWidth > 768 ? 550 : 300}
             margin={8}
             thumbnailImageComponent={Thumbnail}
             onClick={(index) => setSelectedPhoto(photos[index])}
