@@ -83,7 +83,7 @@ export default function Home() {
             }))}
           />
           {loading && (
-            <div className="flex items-center justify-center mt-10">
+            <div className="flex items-center justify-center m-10">
               <span className="loader"></span>
             </div>
           )}

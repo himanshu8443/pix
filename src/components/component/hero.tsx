@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-export default function hero(): JSX.Element {
+export default function Hero(): JSX.Element {
   return (
     <div className="flex flex-col">
       <section className="bg-gray-950 relative py-20 md:py-32">

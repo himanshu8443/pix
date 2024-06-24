@@ -10,7 +10,7 @@ const Thumbnail = (props: ThumbnailImageProps) => {
       src={props.imageProps.src}
       height={props.item.height}
       width={props.item.width}
-      className="object-cover w-full h-full"
+      className="object-cover w-full h-full cursor-pointer hover:scale-110 active:scale-100 transition-transform"
     />
   );
 };
