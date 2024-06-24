@@ -22,7 +22,11 @@ export default function Home() {
   const [page, setPage] = useState(1);
 
   const handleScroll = () => {
-    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+    const scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight =
+      document.documentElement.scrollHeight || document.body.scrollHeight;
+    const clientHeight = window.innerHeight;
     if (scrollTop + clientHeight >= scrollHeight - 20) {
       setPage((prev) => prev + 1);
     }
@@ -36,7 +40,7 @@ export default function Home() {
   useEffect(() => {
     setLoading(true);
     pexelsClient.photos
-      .curated({ per_page: 20, page: page })
+      .curated({ per_page: 10, page: page })
       .then((response) => {
         if ("photos" in response) {
           const nonDuplicatePhotos = response.photos.filter((photo) => {
