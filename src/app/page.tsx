@@ -1,6 +1,6 @@
 "use client";
-import Hero from "@/components/component/Hero";
-import Thumbnail from "@/components/component/Thumbnail";
+import Hero from "../components/component/Hero";
+import Thumbnail from "../components/component/Thumbnail";
 import { createClient, ErrorResponse, Photos } from "pexels";
 import { useEffect, useState } from "react";
 import { Gallery } from "react-grid-gallery";
@@ -18,11 +18,25 @@ export default function Home() {
   const [selectedPhoto, setSelectedPhoto] = useState<
     Photos["photos"][0] | null
   >(null);
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
 
+  const handleScroll = () => {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 20) {
+      setPage((prev) => prev + 1);
+    }
+  };
+
   useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
     pexelsClient.photos
-      .curated({ per_page: 20 })
+      .curated({ per_page: 20, page: page })
       .then((response) => {
         if ("photos" in response) {
           const nonDuplicatePhotos = response.photos.filter((photo) => {
@@ -30,14 +44,15 @@ export default function Home() {
               return existingPhoto.id === photo.id;
             });
           });
-          setPhotos([...photos, ...nonDuplicatePhotos]);
+          setPhotos((prev) => [...prev, ...nonDuplicatePhotos]);
+          setLoading(false);
           console.log(response.photos);
         }
       })
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [page]);
   return (
     <div className="flex flex-col gap-10">
       <Hero />
@@ -55,7 +70,7 @@ export default function Home() {
         <div className="">
           <Gallery
             enableImageSelection={false}
-            rowHeight={500}
+            rowHeight={550}
             margin={8}
             thumbnailImageComponent={Thumbnail}
             onClick={(index) => setSelectedPhoto(photos[index])}
@@ -67,6 +82,11 @@ export default function Home() {
               width: photo.width,
             }))}
           />
+          {loading && (
+            <div className="flex items-center justify-center mt-10">
+              <span className="loader"></span>
+            </div>
+          )}
         </div>
       </section>
       {selectedPhoto && (
