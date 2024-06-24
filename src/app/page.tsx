@@ -1,5 +1,5 @@
 "use client";
-import Hero from "../components/component/Hero";
+import Hero from "../components/component/HeroSection";
 import Thumbnail from "../components/component/Thumbnail";
 import { createClient, ErrorResponse, Photos } from "pexels";
 import { useEffect, useState } from "react";
